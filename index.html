@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <style>
+        * {
+            font-family: poppins, sans-serif;
+            margin: 0px;
+        }
+
+        .container {
+            min-height: 100vh;
+            width: 100%;
+            background: linear-gradient(125deg, #420fa9, #90baff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .container h1 {
+            font-size: 3.5rem;
+            color: white;
+        }
+
+        .container h1 span {
+            color: #ffff76;
+        }
+
+        .calculator {
+            background-color: #90baff;
+            padding: 30px 40px;
+            display: flex;
+            gap: 20px;
+            border-radius: 10px;
+        }
+
+        .calculator #date {
+            padding: 10px;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .calculator #btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            background-color: #ffff76;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        p{
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Age <span>Calculator</span></h1>
+        <div class="calculator">
+            <input type="date" id="date">
+            <button onclick="calculateAge()" id="btn">Calculate</button>
+        </div>
+        <p id="result"></p>
+    </div>
+
+    <script>
+
+        let userInput = document.querySelector("#date");
+        userInput.max = new Date().toISOString().split("T")[0];
+
+        function calculateAge() {
+            let birthDate = new Date(userInput.value);
+            if (!birthDate || isNaN(birthDate)) {
+                alert('Please enter your date of birth');
+                return;
+            }
+
+            let today = new Date();
+            let d1 = birthDate.getDate();
+            let m1 = birthDate.getMonth() + 1;
+            let y1 = birthDate.getFullYear();
+
+            let d2 = today.getDate();
+            let m2 = today.getMonth() + 1;
+            let y2 = today.getFullYear();
+
+            let y = y2 - y1;
+            let m = m2 - m1;
+            let d = d2 - d1;
+
+            if (m < 0 || (m === 0 && d < 0)) {
+                y--;
+                m += 12;
+            }
+
+            if (d < 0) {
+                m--;
+                d += getDaysInMonth(today.getFullYear(), today.getMonth());
+            }
+
+            if (m < 0) {
+                m += 12;
+                y--;
+            }
+            document.getElementById('result').innerText = `You are ${y} years, ${m} months, and ${d} days old.`;
+        }
+
+        function getDaysInMonth(year, month) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+
+    </script>
+</body>
+
+</html>
